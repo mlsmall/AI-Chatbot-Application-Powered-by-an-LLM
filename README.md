@@ -1,10 +1,10 @@
 # AI Chatbot Application Powered by an LLM
 
-We will be using the [Falcon 40B LLM](https://falconllm.tii.ae/falcon.html) model to create a Chatbot application. Falcon 40B is a large language model that has been trained on 40 billion parameters and 1 trillion tokens.
+This chatbot application will be created using the [Falcon 7B LLM](https://falconllm.tii.ae/falcon.html) generative model. For this example it will run locally, but it can also run on a server. Falcon 7B is a large language model that has been trained on 7 billion parameters and 1.5 trillion tokens of a massive English web dataset [(RefinedWeb)][https://huggingface.co/datasets/tiiuae/falcon-refinedweb). It was built by the [Technology Innovation Institute](https://www.tii.ae/).
 
 #### Setting up the API Key
 
-Load your HuggingFace API key and relevant Python libraries
+To use the Falcon model locally, it is required to connect to it through a HuggingFace API key. So first we load our HuggingFace API key and relevant Python libraries. The key is stored locally in an .env file.
 
 
 ```python
@@ -19,7 +19,7 @@ _ = load_dotenv(find_dotenv()) # read local .env file
 hf_api_key = os.environ['HF_API_KEY']
 ```
 
-The ```text_generation``` is an inference library is used to deal with open source LLM's. It enables you to run to the chatbot application locally and to load both API's: the key that connects us to the Falcom LLM, and the HuggingFace API needed to use the LLM.
+The ```text_generation``` library is an inference library that offers a convenient way of interfacing with open source LLM's. It enables you to run to the chatbot application locally and to load both API's. One for connectiong us to the Falcom LLM, and the second one is HuggingFace API key needed to use the LLM.
 
 
 ```python
@@ -32,7 +32,7 @@ from text_generation import Client
 client = Client(os.environ['HF_API_FALCOM_BASE'], headers={"Authorization": f"Bearer {hf_api_key}"}, timeout=120)
 ```
 
-## Building an app to chat with the Falcon LLM
+## Creating a Prompt to Chat with the Falcon LLM
 
 We create the variable prompt that inlcudes the text we want to feed to the model.  Then we use the client to make the request to the Falcon LLM.
 
@@ -43,17 +43,14 @@ prompt = "Why is the sky blue?"
 client.generate(prompt, max_new_tokens=256).generated_text
 ```
 
-
-
-
-    "\nThe sky appears blue because of the way that light interacts with the Earth's atmosphere. When light enters the atmosphere, it is scattered by the molecules and particles in the air. The blue light is scattered more than the other colors in the spectrum, which makes it visible to our eyes."
+    "The sky appears blue because of the way that light interacts with the Earth's atmosphere. When light enters the atmosphere, it is scattered by the molecules and particles in the air. The blue light is scattered more than the other colors in the spectrum, which makes it visible to our eyes."
 
 
 
 ## Creating a Chatbot
 
-Getting a response from the LLM is great, but it's not really a chatbot. We cannot communicate back and forth with it.
-To start creating a chatbot, we use Gradio.  First, we use it to generate a user interface that we can use for chatting with our LLM.
+Getting a response from the LLM is great, but we cannot communicate back and forth with it.  It's not really a chatbot unless we can follow up with questions and it understands the context of our conversation.
+To create a real chatbot, we will use Gradio.  First, it is used to generate a user interface that we can use for chatting with our LLM.
 
 
 ```python
@@ -71,27 +68,11 @@ demo = gr.Interface(fn=generate,
                     outputs=[gr.Textbox(label="Completion")])
 
 gr.close_all()
-demo.launch(share=True)#, server_port=int(os.environ['PORT1']))
+demo.launch() # To share the chatbot publicly use the attribute share=True. You can use server_port=int(os.environ['PORT1']) to specify your own port.
 ```
+Now we have a chatbot interface where we can type a prompt and get a response. This is what it looks like.
 
-    Closing server running on port: 7875
-    Closing server running on port: 7860
-    Closing server running on port: 7875
-    Running on local URL:  http://127.0.0.1:7875
-    Running on public URL: https://2c39daa924c37e016f.gradio.live
-    
-    This share link expires in 72 hours. For free permanent hosting and GPU upgrades, run `gradio deploy` from Terminal to deploy to Spaces (https://huggingface.co/spaces)
-    
-
-
-<div><iframe src="https://2c39daa924c37e016f.gradio.live" width="100%" height="500" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;" frameborder="0" allowfullscreen></iframe></div>
-
-
-
-
-
-    
-
+<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/first prompt.png" width="350" />
 
 
 This interface makes it easy to type our questions and get responses from the model, but it doesn't save our previous questions. So we cannot have a conversation. To fix this, we use another component from Gradio called gr.chatbot().

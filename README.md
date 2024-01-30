@@ -191,10 +191,12 @@ with gr.Blocks() as demo:
 
 demo.launch()
 ```
+<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/advanced%20window%201.png" width="1012" />
+<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/advanced%20window%202.png" width="1012" />
+
+And to close all your gradio interfaces:
 
 
 ```python
 gr.close_all()
 ```
-<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/advanced%20window%201.png" width="1012" />
-<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/advanced%20window%202.png" width="1012" />

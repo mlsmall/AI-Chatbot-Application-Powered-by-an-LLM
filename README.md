@@ -32,7 +32,7 @@ from text_generation import Client
 client = Client(os.environ['HF_API_FALCOM_BASE'], headers={"Authorization": f"Bearer {hf_api_key}"}, timeout=120)
 ```
 
-## Creating a Prompt to Chat with the Falcon LLM
+### Creating a Prompt to Chat with the Falcon LLM
 
 We create the variable prompt that inlcudes the text we want to feed to the model.  Then we use the client to make the request to the Falcon LLM.
 
@@ -47,11 +47,12 @@ client.generate(prompt, max_new_tokens=256).generated_text
 
 
 
-## Creating a Chatbot
-
+## Creating a Chatbot Application
 Getting a response from the LLM is great, but we cannot communicate back and forth with it.  It's not really a chatbot unless we can follow up with questions and it understands the context of our conversation.
-To create a real chatbot, we will use Gradio.  First, it is used to generate a user interface that we can use for chatting with our LLM.
+To create a real chatbot, we will use Gradio.
 
+### Creating the User Interface with Gradio
+First, Gradio used to generate a user interface that we can use for chatting with our LLM. [Gradio](https://www.gradio.app/) is an open-source Python package that can be used to quickly build a web application for a machine learning model or API. 
 
 ```python
 import gradio as gr
@@ -68,41 +69,36 @@ demo = gr.Interface(fn=generate,
                     outputs=[gr.Textbox(label="Completion")])
 
 gr.close_all()
-demo.launch() # To share the chatbot publicly use the attribute share=True. You can use server_port=int(os.environ['PORT1']) to specify your own port.
+demo.launch() # To share the chatbot publicly use the attribute `share=True`. You can use `server_port=int(os.environ['PORT1'])` to specify your own port.
 ```
 Now we have a chatbot interface where we can type a prompt and get a response. This is what it looks like.
 
-<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/first prompt.png" width="350" />
-
+<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/first prompt.png" width="650" />
 
 This interface makes it easy to type our questions and get responses from the model, but it doesn't save our previous questions. So we cannot have a conversation. To fix this, we use another component from Gradio called gr.chatbot().
 
-## Saving the Chat History
+### Saving the Chat History
 
-- `gr.Chatbot()` allows you to save the chat history (between the user and the LLM) as well as display the dialogue in the app.
-- Define your  to take in a `gr.Chatbot()` object.  
-  - Within your defined function, append a tuple (or a list) containing the user message and the LLM's response:
-`chatbot_object.append( (user_message, llm_message) )`
-
+- `gr.Chatbot()` allows us to save the chat history (between the user and the LLM) as well as display the dialogue in the application.
+- Define a function to take in a `gr.Chatbot()` object.
+  - Within the defined function, we append to the chat history a tuple (or a list) containing the user message and the LLM's response: `chat_history.append((message, bot_message))`.
 - Include the chatbot object in both the inputs and the outputs of the app.
 
-### Format the prompt with the chat history
+#### Format the prompt to save the chat history
 
 We create a format function to format the chat prompt to include our message and the chat history. We tell the LLM which messages come from the user (User) and which messages come from the model (Assistant). We then pass the formatted prompt to our API that will generate a response based on both the user and the assistant messages.
 
 - You can iterate through the chatbot object with a for loop.
 - Each item is a tuple containing the user message and the LLM's message.
 
+The idea is to create a function like this:
 ```Python
 for turn in chat_history:
-    user_msg, bot_msg = turn
+    user_message, bot_message = turn
     ...
 ```
-
-
-
-
 ```python
+# We format the prompt to include the chat history and we tell it which messages come from the user and which messages come from itself (Assistant).
 def format_chat_prompt(message, chat_history):
     prompt = ""
     for turn in chat_history:
@@ -120,35 +116,20 @@ def respond(message, chat_history):
         return "", chat_history
 
 with gr.Blocks() as demo:
-    chatbot = gr.Chatbot(height=240) #just to fit the Jupyter notebook
-    msg = gr.Textbox(label="Prompt")
-    btn = gr.Button("Submit")
+    chatbot = gr.Chatbot(height=240) # height is for the he size of the chatbot interface
+    msg = gr.Textbox(label="Prompt") # This is the prompt box where you write your message
+    btn = gr.Button("Submit") # The actual button that you click to submit your prompt
     clear = gr.ClearButton(components=[msg, chatbot], value="Clear console")
 
     btn.click(respond, inputs=[msg, chatbot], outputs=[msg, chatbot])
     msg.submit(respond, inputs=[msg, chatbot], outputs=[msg, chatbot]) #Press enter to submit
 demo.launch(share=True)#, server_port=int(os.environ['PORT3']))
 ```
+<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/first prompt.png" width="650" />  
 
-    Running on local URL:  http://127.0.0.1:7877
-    Running on public URL: https://2ee76c550678000881.gradio.live
-    
-    This share link expires in 72 hours. For free permanent hosting and GPU upgrades, run `gradio deploy` from Terminal to deploy to Spaces (https://huggingface.co/spaces)
-    
-
-
-<div><iframe src="https://2ee76c550678000881.gradio.live" width="100%" height="500" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;" frameborder="0" allowfullscreen></iframe></div>
-
-
-
-
-
-    
-
-
-
-### Adding other advanced features
-
+## Advanced Gradio Features
+### Creating a system message
+You can create a system message that will you give your chatbot assistance a personality.
 
 ```python
 def format_chat_prompt(message, chat_history, instruction):
@@ -209,22 +190,9 @@ with gr.Blocks() as demo:
     msg.submit(respond, inputs=[msg, chatbot, system], outputs=[msg, chatbot]) #Press enter to submit
 
 gr.close_all()
-demo.queue().launch(share=True, server_port=int(os.environ['PORT4']))    
+demo.launch()    
 ```
-
-Notice, in the cell above, you have used `demo.queue().launch()` instead of `demo.launch()`. "queue" helps you to boost up the performance for your demo. You can read [setting up a demo for maximum performance](https://www.gradio.app/guides/setting-up-a-demo-for-maximum-performance) for more details.
-
 
 ```python
 gr.close_all()
-```
-
-    Closing server running on port: 7875
-    Closing server running on port: 7860
-    Closing server running on port: 7875
-    
-
-
-```python
-
 ```

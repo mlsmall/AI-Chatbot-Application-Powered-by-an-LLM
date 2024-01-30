@@ -73,7 +73,7 @@ demo.launch() # To share the chatbot publicly use the attribute `share=True`. Yo
 ```
 Now we have a chatbot interface where we can type a prompt and get a response. This is what it looks like.
 
-<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/first prompt.png" width="650" />
+<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/first prompt.png" width="944" />
 
 This interface makes it easy to type our questions and get responses from the model, but it doesn't save our previous questions. So we cannot have a conversation. To fix this, we use another component from Gradio called gr.chatbot().
 
@@ -125,7 +125,7 @@ with gr.Blocks() as demo:
     msg.submit(respond, inputs=[msg, chatbot], outputs=[msg, chatbot]) #Press enter to submit
 demo.launch(share=True)#, server_port=int(os.environ['PORT3']))
 ```
-<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/first prompt.png" width="650" />  
+<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/first prompt.png" width="944" />  
 
 ## Advanced Gradio Features
 ### Creating a system message
@@ -189,10 +189,12 @@ with gr.Blocks() as demo:
     btn.click(respond, inputs=[msg, chatbot, system], outputs=[msg, chatbot])
     msg.submit(respond, inputs=[msg, chatbot, system], outputs=[msg, chatbot]) #Press enter to submit
 
-gr.close_all()
-demo.launch()    
+demo.launch()
 ```
+
 
 ```python
 gr.close_all()
 ```
+<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/advanced%20window%201.png" width="944" />
+<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/advanced%20window%202.png" width="944" />

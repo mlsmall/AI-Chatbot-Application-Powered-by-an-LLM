@@ -125,7 +125,7 @@ with gr.Blocks() as demo:
     msg.submit(respond, inputs=[msg, chatbot], outputs=[msg, chatbot]) #Press enter to submit
 demo.launch(share=True)#, server_port=int(os.environ['PORT3']))
 ```
-<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/first prompt.png" width="1012" />  
+<img src="https://github.com/mlsmall/AI-Chatbot-Application-Powered-by-an-LLM/blob/main/chatbot%20window.png" width="1012" />  
 
 ## Advanced Gradio Features
 ### Creating a system message

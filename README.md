@@ -1,6 +1,6 @@
 # Chatbot Application Powered by an LLM
 
-This chatbot application is powered by the [Falcon 7B LLM](https://falconllm.tii.ae/falcon.html) generative model. For this example, it will run locally, but it can also run on a server. Falcon 7B is a large language model that has been trained on 7 billion parameters and 1.5 trillion tokens of a massive English web dataset [(RefinedWeb)][https://huggingface.co/datasets/tiiuae/falcon-refinedweb). It was built by the [Technology Innovation Institute](https://www.tii.ae/).
+This chatbot application is powered by the [Falcon 7B LLM](https://falconllm.tii.ae/falcon.html) generative model. For this example, it will run locally, but it can also run on a server. Falcon 7B is a large language model that has been trained on 7 billion parameters and 1.5 trillion tokens of a massive English web dataset [(RefinedWeb)](https://huggingface.co/datasets/tiiuae/falcon-refinedweb). It was built by the [Technology Innovation Institute](https://www.tii.ae/).
 
 #### Setting up the API Key
 

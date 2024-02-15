@@ -1,10 +1,10 @@
 # Chatbot Application Powered by an LLM
 
-This chatbot is a Generative AI application that will be created using the [Falcon 7B LLM](https://falconllm.tii.ae/falcon.html) model. For this example it will run locally, but it can also run on a server. Falcon 7B is a large language model that has been trained on 7 billion parameters and 1.5 trillion tokens of a massive English web dataset [(RefinedWeb)][https://huggingface.co/datasets/tiiuae/falcon-refinedweb). It was built by the [Technology Innovation Institute](https://www.tii.ae/).
+This chatbot application is powered by the [Falcon 7B LLM](https://falconllm.tii.ae/falcon.html) generative model. For this example, it will run locally, but it can also run on a server. Falcon 7B is a large language model that has been trained on 7 billion parameters and 1.5 trillion tokens of a massive English web dataset [(RefinedWeb)][https://huggingface.co/datasets/tiiuae/falcon-refinedweb). It was built by the [Technology Innovation Institute](https://www.tii.ae/).
 
 #### Setting up the API Key
 
-To use the Falcon model locally, it is required to connect to it through a HuggingFace API key. So first we load our HuggingFace API key and relevant Python libraries. The key is stored locally in an .env file.
+To use the Falcon model locally, it must be connected through a HuggingFace API key. So first we load our HuggingFace API key and relevant Python libraries. The key is stored locally in an .env file.
 
 
 ```python
@@ -19,7 +19,7 @@ _ = load_dotenv(find_dotenv()) # read local .env file
 hf_api_key = os.environ['HF_API_KEY']
 ```
 
-The ```text_generation``` library is an inference library that offers a convenient way of interfacing with open source LLM's. It enables you to run to the chatbot application locally and to load both API's. One for connectiong us to the Falcom LLM, and the second one is HuggingFace API key needed to use the LLM.
+The ```text_generation``` library is an inference library that offers a convenient way of interfacing with open source LLM's. It enables you to run the chatbot application locally and to load both API's. One for connecting us to the Falcom LLM, and the second one is the HuggingFace API key needed to use the LLM.
 
 
 ```python
@@ -34,12 +34,12 @@ client = Client(os.environ['HF_API_FALCOM_BASE'], headers={"Authorization": f"Be
 
 ### Creating a Prompt to Chat with the Falcon LLM
 
-We create the variable prompt that inlcudes the text we want to feed to the model.  Then we use the client to make the request to the Falcon LLM.
+We create the variable prompt that includes the text we want to feed to the model.  Then we use the client to make the request to the Falcon LLM.
 
 
 ```python
 prompt = "Why is the sky blue?"
-# max_new_tokens is the maxinum number of words in the response
+# max_new_tokens is the maximum number of words in the response
 client.generate(prompt, max_new_tokens=256).generated_text
 ```
 
@@ -48,11 +48,11 @@ client.generate(prompt, max_new_tokens=256).generated_text
 
 
 ## Creating a Chatbot Application
-Getting a response from the LLM is great, but we cannot communicate back and forth with it.  It's not really a chatbot unless we can follow up with questions and it understands the context of our conversation.
+Getting a response from the LLM is great, but we cannot communicate back and forth with it.  It's not truly a chatbot unless we can follow up with questions, and it understands the context of our conversation.
 To create a real chatbot, we will use Gradio.
 
 ### Creating the User Interface with Gradio
-First, Gradio used to generate a user interface that we can use for chatting with our LLM. [Gradio](https://www.gradio.app/) is an open-source Python package that can be used to quickly build a web application for a machine learning model or API. 
+First, Gradio is used to generate a user interface that we can use for chatting with our LLM. [Gradio](https://www.gradio.app/) is an open-source Python package that can be used to quickly build a web application for a machine learning model or API. 
 
 ```python
 import gradio as gr
@@ -69,7 +69,7 @@ demo = gr.Interface(fn=generate,
                     outputs=[gr.Textbox(label="Completion")])
 
 gr.close_all()
-demo.launch() # To share the chatbot publicly use the attribute `share=True`. You can use `server_port=int(os.environ['PORT1'])` to specify your own port.
+demo.launch() # To share the chatbot publicly use the attribute `share=True`. You can use `server_port=int(os.environ['PORT1'])` to specify your port.
 ```
 Now we have a chatbot interface where we can type a prompt and get a response. This is what it looks like.
 
@@ -86,7 +86,7 @@ This interface makes it easy to type our questions and get responses from the mo
 
 #### Format the prompt to save the chat history
 
-We create a format function to format the chat prompt to include our message and the chat history. We tell the LLM which messages come from the user (User) and which messages come from the model (Assistant). We then pass the formatted prompt to our API that will generate a response based on both the user and the assistant messages.
+We create a format function to format the chat prompt to include our message and the chat history. We tell the LLM which messages come from the user (User) and which messages come from the model (Assistant). We then pass the formatted prompt to our API which will generate a response based on both the user and the assistant messages.
 
 - You can iterate through the chatbot object with a for loop.
 - Each item is a tuple containing the user message and the LLM's message.
@@ -129,7 +129,7 @@ demo.launch(share=True)#, server_port=int(os.environ['PORT3']))
 
 ## Advanced Gradio Features
 ### Creating a system message
-You can create a system message that will you give your chatbot assistance a personality.
+You can create a system message that will give your chatbot assistance a personality.
 
 ```python
 def format_chat_prompt(message, chat_history, instruction):

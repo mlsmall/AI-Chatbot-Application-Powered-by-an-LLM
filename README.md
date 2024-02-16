@@ -81,7 +81,7 @@ This interface makes it easy to type our questions and get responses from the mo
 
 - `gr.Chatbot()` allows us to save the chat history (between the user and the LLM) as well as display the dialogue in the application.
 - Define a function to take in a `gr.Chatbot()` object.
-  - Within the defined function, we append to the chat history a tuple (or a list) containing the user message and the LLM's response: `chat_history.append((message, bot_message))`.
+  - Within the defined function, we append to the chat history a tuple containing the user message and the LLM's response: `chat_history.append((message, bot_message))`.
 - Include the chatbot object in both the inputs and the outputs of the app.
 
 #### Format the prompt to save the chat history
@@ -90,13 +90,7 @@ We create a format function to format the chat prompt to include our message and
 
 - You can iterate through the chatbot object with a for loop.
 - Each item is a tuple containing the user message and the LLM's message.
-
-The idea is to create a function like this:
-```Python
-for turn in chat_history:
-    user_message, bot_message = turn
-    ...
-```
+  
 ```python
 # We format the prompt to include the chat history and we tell it which messages come from the user and which messages come from itself (Assistant).
 def format_chat_prompt(message, chat_history):
@@ -116,9 +110,9 @@ def respond(message, chat_history):
         return "", chat_history
 
 with gr.Blocks() as demo:
-    chatbot = gr.Chatbot(height=240) # height is for the he size of the chatbot interface
-    msg = gr.Textbox(label="Prompt") # This is the prompt box where you write your message
-    btn = gr.Button("Submit") # The actual button that you click to submit your prompt
+    chatbot = gr.Chatbot(height=240) # height of the chatbot interface
+    msg = gr.Textbox(label="Prompt") # the box where you write your message
+    btn = gr.Button("Submit") # the button that you click to submit your prompt
     clear = gr.ClearButton(components=[msg, chatbot], value="Clear console")
 
     btn.click(respond, inputs=[msg, chatbot], outputs=[msg, chatbot])
@@ -160,13 +154,10 @@ def respond(message, chat_history, instruction, temperature=0.7):
     #Streaming the tokens
     for idx, response in enumerate(stream):
             text_token = response.token.text
-
             if response.details:
                 return
-
             if idx == 0 and text_token.startswith(" "):
                 text_token = text_token[1:]
-
             acc_text += text_token
             last_turn = list(chat_history.pop(-1))
             last_turn[-1] += acc_text

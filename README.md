@@ -32,7 +32,7 @@ from text_generation import Client
 client = Client(os.environ['HF_API_FALCOM_BASE'], headers={"Authorization": f"Bearer {hf_api_key}"}, timeout=120)
 ```
 
-### Creating a Prompt to Chat with the Falcon LLM
+### Making a Request to the Falcon LLM
 
 We create the variable prompt that includes the text we want to feed to the model.  Then we use the client to make the request to the Falcon LLM.
 
